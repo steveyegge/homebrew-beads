@@ -1,0 +1,24 @@
+class Bd < Formula
+  desc "AI-supervised issue tracker for coding workflows"
+  homepage "https://github.com/steveyegge/beads"
+  url "https://github.com/steveyegge/beads/archive/refs/tags/v0.9.4.tar.gz"
+  sha256 "70466f2e7e5d0c0e2ee75867949b1d939f8f6bb4102741a6fbe44d5e5ecd7b77"
+  license "MIT"
+  head "https://github.com/steveyegge/beads.git", branch: "main"
+
+  depends_on "go" => :build
+
+  def install
+    # Build the CLI
+    system "go", "build", *std_go_args(ldflags: "-s -w -X main.Version=#{version}"), "./cmd/bd"
+  end
+
+  test do
+    # Test that the binary runs and outputs version
+    assert_match version.to_s, shell_output("#{bin}/bd version")
+
+    # Test basic functionality
+    system bin/"bd", "init", "--prefix", "test"
+    assert_predicate testpath/".beads/test.db", :exist?
+  end
+end
