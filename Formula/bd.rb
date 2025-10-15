@@ -15,10 +15,15 @@ class Bd < Formula
 
   test do
     # Test that the binary runs and outputs version
-    assert_match version.to_s, shell_output("#{bin}/bd version")
+    output = shell_output("#{bin}/bd version")
+    assert_match "bd version #{version}", output
 
-    # Test basic functionality
-    system bin/"bd", "init", "--prefix", "test"
+    # Test init command
+    system bin/"bd", "init", "--prefix=test"
     assert_predicate testpath/".beads/test.db", :exist?
+
+    # Test list command (should show no issues)
+    list_output = shell_output("#{bin}/bd list --db=#{testpath}/.beads/test.db")
+    assert_match "Found 0 issues", list_output
   end
 end
