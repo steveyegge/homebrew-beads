@@ -1,8 +1,8 @@
 class Bd < Formula
   desc "AI-supervised issue tracker for coding workflows"
   homepage "https://github.com/steveyegge/beads"
-  url "https://github.com/steveyegge/beads/archive/refs/tags/v0.17.0.tar.gz"
-  sha256 "b5fb7a56bbf57589ec04118842efba884a881c57493fe8fdf8be4374692e1dc5"
+  url "https://github.com/steveyegge/beads/archive/refs/tags/v0.17.1.tar.gz"
+  sha256 "fa98694cbf739d5b91603210131b9840b50e467d7fc007a17281d34693b4b2e9"
   license "MIT"
   head "https://github.com/steveyegge/beads.git", branch: "main"
 
