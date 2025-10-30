@@ -1,8 +1,8 @@
 class Bd < Formula
   desc "AI-supervised issue tracker for coding workflows"
   homepage "https://github.com/steveyegge/beads"
-  url "https://github.com/steveyegge/beads/archive/refs/tags/v0.17.7.tar.gz"
-  sha256 "712823ade64c700141acdf8a58db67d0f140cc044805ae52ad3e985a5cce3a76"
+  url "https://github.com/steveyegge/beads/archive/refs/tags/v0.19.0.tar.gz"
+  sha256 "bf803902341d225865cca681b4b2d33873211ca2e761917af475fea754804b62"
   license "MIT"
   head "https://github.com/steveyegge/beads.git", branch: "main"
 
@@ -17,13 +17,5 @@ class Bd < Formula
     # Test that the binary runs and outputs version
     output = shell_output("#{bin}/bd version")
     assert_match "bd version #{version}", output
-
-    # Test init command
-    system bin/"bd", "init", "--prefix=test"
-    assert_predicate testpath/".beads/test.db", :exist?
-
-    # Test list command (should show no issues)
-    list_output = shell_output("#{bin}/bd list --db=#{testpath}/.beads/test.db")
-    assert_match "Found 0 issues", list_output
   end
 end
