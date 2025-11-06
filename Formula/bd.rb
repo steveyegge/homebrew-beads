@@ -15,8 +15,13 @@ class Bd < Formula
   end
 
   on_linux do
-    url "https://github.com/steveyegge/beads/releases/download/v#{version}/beads_#{version}_linux_amd64.tar.gz"
-    sha256 "$(grep 'linux_amd64.tar.gz' ../checksums.txt | awk '{print $1}')"
+    if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+      url "https://github.com/steveyegge/beads/releases/download/v#{version}/beads_#{version}_linux_arm64.tar.gz"
+      sha256 ""
+    else
+      url "https://github.com/steveyegge/beads/releases/download/v#{version}/beads_#{version}_linux_amd64.tar.gz"
+      sha256 "b1ce87c4e4d44da0014d9397eb597d7b99de4dcc97021b8fe279b2c2a3fa5961"
+    end
   end
 
   def install
