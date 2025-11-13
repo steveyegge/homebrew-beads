@@ -3,6 +3,9 @@ class Bd < Formula
   homepage "https://github.com/steveyegge/beads"
   version "0.23.1"
   license "MIT"
+  head "https://github.com/steveyegge/beads.git", branch: "main"
+
+  depends_on "go" => :build
 
   on_macos do
     if Hardware::CPU.arm?
@@ -25,7 +28,11 @@ class Bd < Formula
   end
 
   def install
-    bin.install "bd"
+    if build.head?
+      system "go", "build", *std_go_args(ldflags: "-s -w"), "./cmd/bd"
+    else
+      bin.install "bd"
+    end
   end
 
   test do
