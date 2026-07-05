@@ -1,51 +1,29 @@
-# Homebrew Beads
+# Homebrew Beads Tap
 
-Homebrew tap for [beads](https://github.com/steveyegge/beads) - an AI-supervised issue tracker for coding workflows.
-
-## Installation
-
-```bash
-brew tap steveyegge/beads
-brew install bd
-```
-
-## Usage
+This tap is deprecated. The supported Homebrew package for beads is the
+`beads` formula in Homebrew core:
 
 ```bash
-# Initialize beads in your project
-bd init
-
-# Create an issue
-bd create "Fix bug in authentication"
-
-# List issues
-bd list
-
-# Get help
-bd quickstart
+brew install beads
+brew upgrade beads
 ```
 
-## About
+The `beads` formula provides the `bd` executable.
 
-Beads (`bd`) is an issue tracker designed for AI-supervised coding workflows. It helps developers and AI agents:
-- Track work with a simple CLI
-- Discover and link related tasks during development
-- Maintain context across coding sessions
-- Auto-sync issues via JSONL for git workflows
+## Migrating From The Old Tap Formula
 
-For more information, visit the [main repository](https://github.com/steveyegge/beads).
-
-## Updating
-
-The formula is automatically updated when new versions are tagged in the main repository.
-
-To update to the latest version:
+If you previously installed beads from this tap as `bd`, switch to the core
+formula:
 
 ```bash
-brew update
-brew upgrade bd
+brew uninstall bd
+brew untap gastownhall/beads 2>/dev/null || true
+brew untap steveyegge/beads 2>/dev/null || true
+brew install beads
 ```
 
-## License
+The `Formula/bd.rb` file remains only as a migration shim for existing tap
+users. It must not package release archives independently of Homebrew core.
 
-MIT License - see the [main repository](https://github.com/steveyegge/beads) for details.
+For project documentation and releases, see
+[gastownhall/beads](https://github.com/gastownhall/beads).

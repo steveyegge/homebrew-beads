@@ -1,33 +1,48 @@
 # typed: false
 # frozen_string_literal: true
 
+# Migration shim: the supported Homebrew package is the `beads` formula in
+# Homebrew core. This formula no longer installs its own `bd` binary; it only
+# depends on `beads` (which provides `bd`) and leaves a pointer for existing
+# tap users. The `url`/`sha256` reference the last tap release purely so the
+# formula has a valid version; the source archive is not built or installed.
 class Bd < Formula
-  desc "AI-supervised issue tracker for coding workflows"
+  desc "Migration shim for the beads Homebrew formula"
   homepage "https://github.com/gastownhall/beads"
-  version "1.0.4"
+  url "https://github.com/gastownhall/beads/archive/refs/tags/v1.0.4.tar.gz"
+  sha256 "60b0ea0399fcb409af41d25b26521a04ed8f8fbcd6a080fff5bb1c84cd7ddbe5"
   license "MIT"
 
-  on_macos do
-    if Hardware::CPU.arm?
-      url "https://github.com/gastownhall/beads/releases/download/v1.0.4/beads_1.0.4_darwin_arm64.tar.gz"
-      sha256 "0c53479fea070a1cabe8eb31e3824d74c5643b1deca71a5fe832ebd38e9ef877"
-    else
-      url "https://github.com/gastownhall/beads/releases/download/v1.0.4/beads_1.0.4_darwin_amd64.tar.gz"
-      sha256 "8a52f7e54fe038d369cc9ea0e65f76853b75f5469c70c9c693d64671623c4ce9"
-    end
-  end
+  deprecate! date:                "2026-06-22",
+             because:             "the supported Homebrew formula is beads",
+             replacement_formula: "beads"
 
-  on_linux do
-    if Hardware::CPU.arm?
-      url "https://github.com/gastownhall/beads/releases/download/v1.0.4/beads_1.0.4_linux_arm64.tar.gz"
-      sha256 "48cdf571cd8b64bae81da829c1309e402bc12e6a4cc6b87606dfc9220b7ece60"
-    else
-      url "https://github.com/gastownhall/beads/releases/download/v1.0.4/beads_1.0.4_linux_amd64.tar.gz"
-      sha256 "643e602e27f666c8726abff0f22001e2b5883988fa960204bde20a3129d448a5"
-    end
-  end
+  depends_on "beads"
 
   def install
-    bin.install "bd"
+    (pkgshare/"README.md").write <<~README
+      The bd tap formula is deprecated.
+
+      Use the Homebrew core beads formula instead:
+
+        brew install beads
+        brew upgrade beads
+
+      The beads formula provides the bd executable.
+    README
+  end
+
+  def caveats
+    <<~EOS
+      This tap formula is only a migration shim.
+
+      Use the Homebrew core formula for future installs and upgrades:
+        brew install beads
+        brew upgrade beads
+    EOS
+  end
+
+  test do
+    assert_match "bd version", shell_output("#{formula_opt_bin("beads")}/bd --version")
   end
 end
